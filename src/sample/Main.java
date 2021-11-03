@@ -1,22 +1,18 @@
 package sample;
 
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
-import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
-import javafx.scene.control.Dialog;
+import javafx.scene.input.DragEvent;
+import javafx.scene.input.Dragboard;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-import java.awt.*;
-import java.util.Collection;
-import java.util.Optional;
+import java.util.*;
+import java.util.List;
 
 public class Main extends Application {
 
@@ -30,11 +26,34 @@ public class Main extends Application {
         primaryStage.setWidth(500);
         primaryStage.setHeight(500);
         Group menuPrincipal = new Group();
+        GridPane gridPane = new GridPane();
+
+        chargementImage.imageView1().setOnDragDetected(dragEvent->{
+            Dragboard dragboard = chargementImage.imageView1().startDragAndDrop(TransferMode.COPY);
+        });
+        chargementImage.imageView1().setOnDragOver(dragEvent->{
+            dragEvent.acceptTransferModes(TransferMode.COPY);
+        });
+        chargementImage.imageView1().setOnDragDropped(dragEvent -> {
+            dragEvent.setDropCompleted(true);
+        });
 
         //menu
 
         Stage stage1 = new Stage();
         stage1.setTitle("Mario");
+
+        //La grille
+
+        gridPane.add(chargementImage.imageView1(), (int)(Math.random()*3),(int)(Math.random()*3));
+        gridPane.add(chargementImage.imageView2(), (int)(Math.random()*3),(int)(Math.random()*3));
+        gridPane.add(chargementImage.imageView3(), (int)(Math.random()*3),(int)(Math.random()*3));
+        gridPane.add(chargementImage.imageView4(), (int)(Math.random()*3),(int)(Math.random()*3));
+        gridPane.add(chargementImage.imageView5(), (int)(Math.random()*3),(int)(Math.random()*3));
+        gridPane.add(chargementImage.imageView6(), (int)(Math.random()*3),(int)(Math.random()*3));
+        gridPane.add(chargementImage.imageView7(), (int)(Math.random()*3),(int)(Math.random()*3));
+        gridPane.add(chargementImage.imageView8(), (int)(Math.random()*3),(int)(Math.random()*3));
+        gridPane.add(chargementImage.imageView9(), (int)(Math.random()*3),(int)(Math.random()*3));
 
         //Les buttons
 
@@ -57,31 +76,14 @@ public class Main extends Application {
             choiceDialog.setContentText("Votre choix : ");
             String resultat = choiceDialog.showAndWait().get();
 
-
             if (resultat == "Retour"){
                 stage1.close();
                 primaryStage.show();
             }else if (resultat == "Jouer"){
-                
+                stage1.setScene(new Scene(gridPane));
+                stage1.show();
             }
-
-
-
         });
-
-
-        //La grille
-
-        GridPane gridPane = new GridPane();
-        gridPane.add(chargementImage.imageView1(), 0,0);
-        gridPane.add(chargementImage.imageView2(), 1,0);
-        gridPane.add(chargementImage.imageView3(), 2,0);
-        gridPane.add(chargementImage.imageView4(), 0,1);
-        gridPane.add(chargementImage.imageView5(), 1,1);
-        gridPane.add(chargementImage.imageView6(), 2,1);
-        gridPane.add(chargementImage.imageView7(), 0,2);
-        gridPane.add(chargementImage.imageView8(), 1,2);
-        gridPane.add(chargementImage.imageView9(), 2,2);
 
         //Les groupes
         menuPrincipal.getChildren().addAll(mario);
