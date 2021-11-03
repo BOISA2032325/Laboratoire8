@@ -1,13 +1,13 @@
 package sample;
 
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
-import javafx.scene.input.DragEvent;
-import javafx.scene.input.Dragboard;
-import javafx.scene.input.TransferMode;
+import javafx.scene.input.*;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
@@ -28,15 +28,19 @@ public class Main extends Application {
         Group menuPrincipal = new Group();
         GridPane gridPane = new GridPane();
 
-        chargementImage.imageView1().setOnDragDetected(dragEvent->{
-            Dragboard dragboard = chargementImage.imageView1().startDragAndDrop(TransferMode.COPY);
+        chargementImage.imageView1().setOnDragDetected(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                Dragboard dragboard = chargementImage.imageView1().startDragAndDrop(TransferMode.ANY);
+                ClipboardContent content = new ClipboardContent();
+                content.putImage(chargementImage.imageView1().getImage());
+                dragboard.setContent(content);
+                chargementImage.imageView1().setVisible(false);
+                mouseEvent.consume();
+            }
         });
-        chargementImage.imageView1().setOnDragOver(dragEvent->{
-            dragEvent.acceptTransferModes(TransferMode.COPY);
-        });
-        chargementImage.imageView1().setOnDragDropped(dragEvent -> {
-            dragEvent.setDropCompleted(true);
-        });
+
+
 
         //menu
 
@@ -95,6 +99,9 @@ public class Main extends Application {
         primaryStage.setScene(new Scene(menuPrincipal));
         primaryStage.show();
 
+    }
+
+    private void handle(MouseEvent e) {
     }
 
 
